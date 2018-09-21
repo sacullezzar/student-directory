@@ -3,8 +3,14 @@ def input_students
   puts "To finish, just hit return twice"
   students = []
   name = gets.chomp
+  puts "which cohort?"
+  cohort = gets.chomp
+  puts "what hobby?"
+  hobby = gets.chomp
+  puts "How tall?"
+  height = gets.chomp
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    students << {name: name, cohort: :november, hobby: hobby, height: height}
     puts "Now we have #{students.count} students"
     name = gets.chomp
 end
@@ -18,6 +24,9 @@ end
 
 def print_names_cohort(names)
   count = 0
+  unless names.length >= 4
+    names.each {|person| puts "#{person[:name]} (#{person[:cohort]} cohort)"}
+    end
   until count == names.length/2
   names.each {|person| puts "#{person[:name]} (#{person[:cohort]} cohort)"}
   count += 2
