@@ -17,7 +17,11 @@ def print_header
 end
 
 def print_names_cohort(names)
-  names.each_with_index { |student,index| puts "#{(index+1)}. #{student [:name]} (#{student [:cohort]} cohort)" }
+  names.each do |student|
+    if student[:name].chr == "D"
+      puts "#{student [:name]} (#{student [:cohort]} cohort)"
+    end
+  end
 end
 
 def print_footer(names)
