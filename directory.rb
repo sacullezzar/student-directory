@@ -17,11 +17,11 @@ def print_header
 end
 
 def print_names_cohort(names)
-  names.each { |student| puts "#{student [:name]} (#{student [:cohort]} cohort)" }
+  names.each_with_index { |student,index| puts "#{(index+1)}. #{student [:name]} (#{student [:cohort]} cohort)" }
 end
 
 def print_footer(names)
-  print "Overall, we have #{names.count} great students"
+  print "#{}Overall, we have #{names.count} great students"
 end
 
 students = input_students
