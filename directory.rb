@@ -17,11 +17,7 @@ def print_header
 end
 
 def print_names_cohort(names)
-  names.each do |student|
-    if student[:name].chr == "D"
-      puts "#{student [:name]} (#{student [:cohort]} cohort)"
-    end
-  end
+  names.each{ |student| puts "#{student [:name]} (#{student [:cohort]} cohort)" if student[:name].length < 12 }
 end
 
 def print_footer(names)
