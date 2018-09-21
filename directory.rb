@@ -17,11 +17,15 @@ def print_header
 end
 
 def print_names_cohort(names)
-  names.each{ |student| puts "#{student [:name]} (#{student [:cohort]} cohort)" if student[:name].length < 12 }
+  count = 0
+  until count == names.length/2
+  names.each {|person| puts "#{person[:name]} (#{person[:cohort]} cohort)"}
+  count += 2
+end
 end
 
 def print_footer(names)
-  print "#{}Overall, we have #{names.count} great students"
+  print "Overall, we have #{names.count} great students"
 end
 
 students = input_students
