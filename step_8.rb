@@ -32,8 +32,30 @@ def print_footer(names)
   print "Overall, we have #{names.length} great students"
 end
 
+def interative_menu
+  students = []
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    selection = gets.chomp
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        if students.length == 0
+          print "No students entered"
+        else
+          print_header
+          prints(students)
+          print_footer(students)
+        end
+      when "9"
+        exit
+      else
+        puts "I don't know what you want to do, try again" # 4. repeat from step 1
+      end
+    end
+  end
 
-students = input_students
-print_header
-prints(students)
-print_footer(students)
+interative_menu
