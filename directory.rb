@@ -1,42 +1,72 @@
-@students = []
+require "CSV"
 
-def split_to_hash(name, cohort = :november)
+@students = []
+@filename = "students.csv"
+
+def data_split(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    split_to_hash(name, cohort)
+def save_students
+  puts "Which file to save to?"
+  puts "1. Default (students.csv)"
+  puts "2. Other (please specify)"
+  choice = STDIN.gets.chomp
+  case choice
+  when "2"
+    puts "File Name:"
+    f_name = STDIN.gets.chomp
+    @filename = f_name + ".csv"
+    choice = "1"
+  when "1"
+    CSV.open(@filename, "a") do |csv|
+      @students.each do |student|
+        csv << [student[:name], student[:cohort]]
+      end
+    end
   end
-  file.close
+  puts "Data saved to #{@filename}"
 end
 
 def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
+  filename = ARGV.first # first argument from the command line
+  if filename.nil?
+    filename = @filename
+  end # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+     puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} doesn't exist"
-    exit
+    puts "#{filename} doesn't exist."
+    puts "Create a #{filename} file?"
+    option = STDIN.gets.chomp
+    if option == "yes"
+    file = File.open(@filename, "w")
   end
+  end
+end
+
+def load_students(filename = @filename)
+    CSV.foreach(filename) do |line|
+      name, cohort = line
+    data_split(name, cohort)
+  end
+  puts "Student data loaded!"
 end
 
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-
   name = STDIN.gets.chomp
-
+  puts "Which cohort is #{name} in?"
+  cohort = STDIN.gets.chomp
   while !name.empty? do
-
-  split_to_hash(name)
+  data_split(name, cohort)
   puts "Now we have #{@students.count} students"
-
+  puts "Please enter the next student"
   name = STDIN.gets.chomp
+  puts "Which cohort is #{name} in?"
+  cohort = STDIN.gets.chomp
   end
 
 end
@@ -96,16 +126,6 @@ def interactive_menu
     print_menu
     process(STDIN.gets.chomp)
   end
-end
-
-def save_students
-  file = File.open("students.csv", "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
 end
 
 try_load_students
